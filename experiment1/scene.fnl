@@ -4,12 +4,12 @@
   (local self {})
   (set self.enter
     (fn [self]
-      (print "enter")
-      (print self)
+      (print "Scene:enter" self)
     )
   )
   (set self.exit
     (fn [self]
+      (print "Scene:exit" self)
     )
   )
   (set self.update

@@ -3,10 +3,10 @@
     (local self
         {
             :enter (fn [self]
-                (print "enter scene2")
+                (print "enter scene2" self)
             )
             :exit (fn [self]
-                (print "exit scene2")
+                (print "exit scene2" self)
             )
             :update (fn [self dt]
             )

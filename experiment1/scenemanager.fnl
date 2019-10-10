@@ -1,13 +1,46 @@
+
+
+(fn find-in-table [tbl val]
+    (var res nil)
+    (each [key value (pairs tbl)]
+        (do
+            ;; (print "key" key "value" value)
+            (if (= val value)
+                (set res value)
+            )
+        )
+    )
+    res
+)
+
+;;(fn test-find-in-table []
+;;    (global a { :tony 2 })
+;;    (do
+;;        (let [b {}]
+;;            (do
+;;                (print"testing A")
+;;                (print a)
+;;                (set b.crud (find-in-table a 2))
+;;                (print b.crud)
+;;                (print "end testing A")
+;;
+;;            )
+;;        )
+;;    )
+;;)
+
 (var SceneManager {})
 (fn SceneManager.create []
     (local self {
-        :list {} ;; holds the list of scenes
+        :data {} ;; holds the list of scenes
 
         :current nil ;; holds the current scene
 
         :add (fn [self sceneTable]
-            (print "sm:add")
-            (table.insert self sceneTable)
+            (do
+                ;;(print "sm:add")
+                (table.insert self.data sceneTable)
+            )
         )
     
         ;; start a scene
@@ -15,15 +48,27 @@
             ;; find the scene in the list
             ;; call exit on current scene if it is there
             ;; call enter on new scene
-            (print "sm:start")
-            (print self.current)
+            ;; (print "sm:start")
+            ;; (print self.current)
             (if (= self.current nil)
-                ;; no current in this case
-                (print "sm:add no current")
-                (set self.current sceneTable)
-                (print "sm:add set current")
-                (print self.current)
-                (self.current:enter)
+                (do ;; current is nil
+                    ;; no current in this case
+                    ;;(print "sm:add no current")
+                    
+                    (set self.current sceneTable)
+                    ;;(print "sm:add set current")
+                    ;;(print self.current)
+                    (self.current:enter)
+                )
+                (do ;; current is not nil
+                    ;; exit the current scene
+                    (self.current:exit)
+                    ;; get the new scene
+                    (set self.current (find-in-table self.data sceneTable))
+                    (self.current:enter)
+                    ;;(print "current after find")
+                    ;;(print self.current)
+                )
             )
         )
     
