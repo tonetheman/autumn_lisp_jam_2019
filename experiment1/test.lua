@@ -16,7 +16,11 @@ function test()
     sm:start(s)
     print("about to start s2")
     sm:start(s2)
-    print("fin")    
+    print("fin")
+
+    sm:update(100)
+    sm:draw()
+    
 end
 
 test()

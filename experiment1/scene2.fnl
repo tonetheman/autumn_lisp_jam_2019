@@ -9,8 +9,10 @@
                 (print "exit scene2" self)
             )
             :update (fn [self dt]
+                (print "update scene 2 called")
             )
             :draw (fn [self]
+                (print "draw scene 2 called")
             )
         }
     

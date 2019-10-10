@@ -36,6 +36,18 @@
 
         :current nil ;; holds the current scene
 
+        :update (fn [self dt]
+            (if (~= self.current nil)
+                (self.current:update dt)
+            )
+        )
+
+        :draw (fn [self]
+            (if (~= self.current nil)
+                (self.current:draw)
+            )
+        )
+
         :add (fn [self sceneTable]
             (do
                 ;;(print "sm:add")

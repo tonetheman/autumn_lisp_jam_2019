@@ -7,3 +7,5 @@ You need to add scenes to the SceneManager.
 
 Once you have done that you can start a Scene.
 Starting a scene will look at the current scene and call scene:exit() if needed.
+
+A Scene will need to have an update and draw method as does the SceneManager.
