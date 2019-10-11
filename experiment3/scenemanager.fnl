@@ -36,10 +36,24 @@
             (do
                 ;;(print "sm:add")
                 ;; (table.insert self.data sceneTable)
-		(tset self.data sceneTable.name sceneTable)
+		        (tset self.data sceneTable.name sceneTable)
             )
         )
     
+        :start-name (fn [self name]
+            (do
+                (print "called start-name" name)
+                (if (~= self.current nil)
+                    (self.current:exit)
+                )
+
+                (print "setting current now")
+                (set self.current (. self.data name))
+                (print "value of current" self.current)
+                (self.current:enter)
+            )
+        )
+
         ;; start a scene
         :start (fn [self sceneTable]
             ;; find the scene in the list
