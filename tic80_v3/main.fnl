@@ -1,4 +1,5 @@
 
+;; load classes
 (global SceneManager (require :scenemanager))
 (global GameScene (require :gamescene))
 (global LoadingScene (require :loadingscene))
@@ -14,8 +15,8 @@
 
 		;; note this is calling the create
 		(set sm (SceneManager.create))
-		(set gamescene (GameScene.create))
-		(set loadingscene (LoadingScene.create))
+		(set gamescene (GameScene.create sm))
+		(set loadingscene (LoadingScene.create sm))
 		(sm:add gamescene)
 		(sm:add loadingscene)
 		(sm:start loadingscene)

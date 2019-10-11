@@ -2,9 +2,11 @@
 (local (w h) (values 240 136))
 
 (var Scene {})
-(fn Scene.create []
+(fn Scene.create [scenemanager]
     (local self
         {
+            :sm scenemanager
+
             :counter 0
 
             :msg "game name here"
@@ -24,6 +26,8 @@
                 (if (= self.counter 60)
                     (do
                         (set self.msg "yup")
+                        
+                        ;; need to call start for next scene...
                     )
                 )
             

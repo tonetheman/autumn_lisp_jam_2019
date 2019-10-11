@@ -1,9 +1,11 @@
 
 (var Scene {})
 
-(fn Scene.create []
+(fn Scene.create [scenemanager]
   
   (local self {})
+  
+  (set self.sm scenemanager)
   
   (set self.player { :sprite 0 :x 0 :y 0 })
   
