@@ -1,8 +1,8 @@
 
 ;; load classes
-(global SceneManager (require :scenemanager))
-(global GameScene (require :gamescene))
-(global LoadingScene (require :loadingscene))
+(local SceneManager (require :scenemanager))
+(local GameScene (require :gamescene))
+(local LoadingScene (require :loadingscene))
 
 (local (W H) (values 240 136))
 (var gamescene nil)
