@@ -30,6 +30,7 @@
                         (set self.msg "yup")
                         
                         ;; need to call start for next scene...
+                        (self.sm:start-name :gamescene)
                     )
                 )
             
