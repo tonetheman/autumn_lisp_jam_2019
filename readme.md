@@ -3,6 +3,10 @@
 ## experiment3
 needed to make scene managers work with strings when you switch scenes
 
+## tic80 4
+loads a loading scene and then after 1 second switches to the game scene
+use scenemanager with start-name now. everything seems to work
+
 ## tic80 3
 started getting 2 scenese working
 had to scene manager working in a way that is useful
