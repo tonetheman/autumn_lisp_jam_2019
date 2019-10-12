@@ -16,6 +16,24 @@
                 )
             )
 
+            :shuffle (fn [self]
+                ;; run the shuffle routine 10 times
+                ;; why 10 really?
+                (for [_ 0 10]
+
+                    ;; real shuffle here
+                    (for [i 52 2 -1]
+                        (local j (math.random i))
+                        (let [tmp1 (. self.cards i)
+                            tmp2 (. self.cards j)]
+                            (tset self.cards i tmp2)
+                            (tset self.cards j tmp1)
+                        )
+                    )
+
+                )
+            )
+
 
         })
 
