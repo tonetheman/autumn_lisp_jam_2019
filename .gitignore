@@ -1,3 +1,6 @@
 experiment1/*.lua
+experiment3/*.lua
 tic80_v2/*.lua
+tic80_v3/*.lua
+tic80_v4/*.lua
 .local
