@@ -23,11 +23,14 @@
 	)
 )
 
-
-(fn mainloop []
-	(sm:update)
-	(sm:draw)
+;; set the global TIC function up here
+(global TIC 
+	(fn  []
+		(sm:update)
+		(sm:draw)
+	)
 )
 
+;; run init one time
 (init)
-(global TIC mainloop)
+
