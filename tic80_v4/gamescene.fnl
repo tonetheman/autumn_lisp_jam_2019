@@ -3,26 +3,22 @@
 
 (fn Scene.create [scenemanager]
   
-  (local self {})
+  (local self {
+    :name :gamescene
   
-  (set self.name :gamescene)
+    :sm scenemanager
   
-  (set self.sm scenemanager)
+    :player { :sprite 0 :x 0 :y 0 }
   
-  (set self.player { :sprite 0 :x 0 :y 0 })
-  
-  (set self.enter
-    (fn [self]
-      ;; (print "Scene:enter" self)
+    :enter (fn [self]
     )
-  )
   
-  (set self.exit
-    (fn [self]
-      ;; (print "Scene:exit" self)
+    :exit (fn [self]
     )
-  )
-
+  })
+  
+  
+  
   (set self.update
     (fn [self dt]
       (if (btnp 3)
