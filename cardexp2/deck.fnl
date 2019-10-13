@@ -38,6 +38,10 @@
             ;; pop a single card off the top
             ;; of the deck and return it
             ;; adjust the current position
+            ;; TODO: needs error checking
+            ;; in my case it does not matter
+            ;; each time you get a new deck so never will hit
+            ;; edge case
             :pop (fn [self]
                 (local tmp self.current)
                 (set self.current (+ self.current 1))
