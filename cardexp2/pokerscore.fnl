@@ -48,35 +48,48 @@
                 )
                 
                 :is-royal-flush? (fn [self hand]
+                    ;; (print "dbg:is-royal-flush? called")
                     (var res false)
                     ;; has to be a flush first!
                     (if (self:is-flush? hand)
-                        (let [
-                            r1 (. (. hand.data 1) :rank)
-                            r2 (. (. hand.data 1) :rank)
-                            r3 (. (. hand.data 1) :rank)
-                            r4 (. (. hand.data 1) :rank)
-                            r5 (. (. hand.data 1) :rank)
-                            ]
-                            (set res (and (= 0 r1) (= 9 r2) (= 10 r3) (= 11 r4) (= 12 r5)) )
-                        )   
+
+                        (do
+                            ;; (print "dbg:is-royal-flush? marked as flush")
+                            (let [
+                                r1 (. (. hand.data 1) :rank)
+                                r2 (. (. hand.data 2) :rank)
+                                r3 (. (. hand.data 3) :rank)
+                                r4 (. (. hand.data 4) :rank)
+                                r5 (. (. hand.data 5) :rank)
+                                ]
+                                ;; (print "dbg:is-royal-flush? after let")
+                                ;; (print "dbg:is-royal-flush?" r1 r2)
+                                (set res (and (= 0 r1) (= 9 r2) (= 10 r3) (= 11 r4) (= 12 r5)) )
+                            )   
+
+                        )
+
                     )
+                    ;;(print "dbg:is-royal-flush? value of res" res)
                     res
                 )
 
                 :score (fn [self hand]
                     (self:sort hand)
-                    (print (hand:srepr))
+                    ;;(print "dbg:score" (hand:srepr))
                     (var res PokerScore.SCORE_NONE)
 
                     (if (self:is-royal-flush? hand)
                         (do
+                            ;; (print "dbg:score: is royal flush worked")
                             (set res PokerScore.SCORE_ROYAL_FLUSH)
-                            (print "RF")
+                            ;;(print "RF")
                         )
-                    )
-                    (if (self:is-flush? hand)
-                        (set res PokerScore.SCORE_FLUSH)
+                        ;; else try to score something else
+                        (if (self:is-flush? hand)
+                            (set res PokerScore.SCORE_FLUSH)
+                        )
+
                     )
                 
                     res

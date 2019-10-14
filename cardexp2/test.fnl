@@ -28,7 +28,7 @@
         (local hand (Hand.create deck))
         (local ps (PokerScore.create))
         (local score (ps:score hand))
-        (print (ps:tr-score score))
+        (print "score" score (ps:tr-score score))
         (print (hand:srepr))
     )
 )
@@ -38,8 +38,9 @@
     (fn []
         (var total_count 0)
         (var flush_count 0)
-
-        (for [_ 0 1000]
+        (var rf_flush_count 0)
+        (local COUNT 50000)
+        (for [_ 0 COUNT]
             (local deck (Deck.create))
             (deck:shuffle2)
             (local hand (Hand.create deck))
@@ -53,7 +54,10 @@
                     (if (= score PokerScore.SCORE_FLUSH)
                         (set flush_count (+ 1 flush_count))
                     )
-                    (print (ps:tr-score score) (hand:srepr))
+                    ;; (print score (ps:tr-score score) (hand:srepr))
+                    (if (= score PokerScore.SCORE_ROYAL_FLUSH)
+                        (set rf_flush_count (+ 1 rf_flush_count))
+                    )
                 ) 
             )
         )
@@ -61,6 +65,7 @@
         (print "------------------")
         (print "total hands " total_count)
         (print "total flush count" flush_count (/ flush_count total_count))
+        (print "total royal flush count" rf_flush_count (/ rf_flush_count total_count))
     )
 )
 
@@ -81,5 +86,5 @@
     )
 )
 
-;; (test-flush)
-(test-royal-flush)
+(test-flush)
+;; (test-royal-flush)
