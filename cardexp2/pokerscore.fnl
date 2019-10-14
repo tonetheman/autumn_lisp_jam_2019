@@ -6,6 +6,9 @@
 
                 :sort (fn [self hand]
                     (print "before sort")
+
+                    ;; TODO:
+                    ;; this will not work since hand is not the array!
                     (table.sort hand (fn [a b]
                         (print "in comp func")
                         (local res (< a.rank b.rank ))
