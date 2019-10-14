@@ -168,8 +168,30 @@
                 )
 
                 :is-two-pair? (fn [self hand]
-                
-                    false
+                    (var res false)
+                    (let [
+                        r1 (. (. hand.data 1) :rank)
+                        r2 (. (. hand.data 2) :rank)
+                        r3 (. (. hand.data 3) :rank)
+                        r4 (. (. hand.data 4) :rank)
+                        r5 (. (. hand.data 5) :rank)
+                    ]
+                        (do
+                            ;; XXYYZ
+                            (if (and (= r1 r2) (= r3 r4))
+                                (set res true)
+                            )
+                            ;; ZXXYY
+                            (if (and (= r2 r3) (= r4 r5))
+                                (set res true)
+                            )
+                            ;; XXZYY
+                            (if (and (= r1 r2) (= r4 r5))
+                                (set res true)
+                            )
+                        )
+                    )
+                    res
                 )
 
                 :is-pair? (fn [self hand]
