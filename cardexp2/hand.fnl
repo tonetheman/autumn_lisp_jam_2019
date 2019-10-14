@@ -16,6 +16,14 @@
                     )
                 )
 
+                :srepr (fn [self]
+                    (local ts "")
+                    (for [_ 0 4]
+                        (local tmp (. self.data _))
+                        (.. ts (tmp:srepr))
+                    )
+                    ts
+                )
             
             })
 
