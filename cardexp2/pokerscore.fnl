@@ -114,7 +114,34 @@
                 )
 
                 :is-straight? (fn [self hand]
-                    false
+                    (var res false)
+                    (let [
+                    r1 (. (. hand.data 1) :rank)
+                    r2 (. (. hand.data 2) :rank)
+                    r3 (. (. hand.data 3) :rank)
+                    r4 (. (. hand.data 4) :rank)
+                    r5 (. (. hand.data 5) :rank)
+                    ]
+                        (do
+                        
+                            (if (and 
+                                    (= r2 (+ r1 1))
+                                    (= r3 (+ r2 1))
+                                    (= r4 (+ r3 1))
+                                    (= r5 (+ r4 1))
+                                )
+                                (set res true)
+                            )
+                        
+                            ;; special case of high straight
+                            (if (and (= 0 r1) (= 9 r2) (= 10 r3) (= 11 r4) (= 12 r5)) 
+                                (set res true)
+                            )
+
+                        )
+                    )
+
+                    res
                 )
 
                 :is-three-of-kind? (fn [self hand]
