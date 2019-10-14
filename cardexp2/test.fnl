@@ -39,7 +39,7 @@
         (var total_count 0)
         (var flush_count 0)
         (var rf_flush_count 0)
-        (local COUNT 5000)
+        (local COUNT 50)
         (for [_ 0 COUNT]
             (local deck (Deck.create))
             (deck:shuffle2)
@@ -47,6 +47,7 @@
             ;; (print (hand:srepr))
             (local ps (PokerScore.create))
             (local score (ps:score hand))
+            (print (hand:srepr) (ps:tr-score score))
             ;; (print "--------------")
             (set total_count (+ 1 total_count))
             (if (~= score -1)
