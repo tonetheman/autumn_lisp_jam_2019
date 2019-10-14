@@ -55,7 +55,33 @@
                 )
                 
                 :is-straight-flush? (fn [self hand]
-                    false
+                    (var res false)
+                    
+                    ;; must be a flush to start with
+                    (if (self:is-flush? hand)
+
+
+                        (let [
+                        r1 (. (. hand.data 1) :rank)
+                        r2 (. (. hand.data 2) :rank)
+                        r3 (. (. hand.data 3) :rank)
+                        r4 (. (. hand.data 4) :rank)
+                        r5 (. (. hand.data 5) :rank)
+                        ]
+                            (if (and 
+                                    (= r2 (+ r1 1))
+                                    (= r3 (+ r2 1))
+                                    (= r4 (+ r3 1))
+                                    (= r5 (+ r4 1))
+                                )
+                                (set res true)
+                            )
+                        )
+
+
+                    )
+
+                    res
                 )
 
                 :is-full-house? (fn [self hand]
