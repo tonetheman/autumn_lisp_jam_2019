@@ -23,5 +23,5 @@
 (hand:repr)
 (local ps (PokerScore.create))
 (ps:score hand)
-;; (print "--------------")
-;; (hand:repr)
+(print "--------------")
+(hand:repr)
