@@ -85,7 +85,32 @@
                 )
 
                 :is-full-house? (fn [self hand]
-                    false
+                    (var res false)
+                    (local r1 (. (. hand.data 1) :rank))
+                    (local r2 (. (. hand.data 2) :rank))
+                    (local r3 (. (. hand.data 3) :rank))
+                    (local r4 (. (. hand.data 4) :rank))
+                    (local r5 (. (. hand.data 5) :rank))
+                    (local s1 (. (. hand.data 1) :suit))
+                    (local s2 (. (. hand.data 2) :suit))
+                    (local s3 (. (. hand.data 3) :suit))
+                    (local s4 (. (. hand.data 4) :suit))
+                    (local s5 (. (. hand.data 5) :suit))
+
+                    ;; XXXYY
+                    (if (and (= s1 s2) (= s2 s3) (= s4 s5))
+                        (if (and (= r1 r2) (= r2 r3) (= r4 r5))
+                            (set res true)
+                        )
+                    )
+                    ;; YYXXX
+                    (if (and (= s1 s2) (= s3 s4) (= s4 s5))
+                        (if (and (= r1 r2) (= r3 r4) (= r4 r5))
+                            (set res true)
+                        )
+                    )
+                    
+                    res
                 )
 
                 :is-straight? (fn [self hand]
