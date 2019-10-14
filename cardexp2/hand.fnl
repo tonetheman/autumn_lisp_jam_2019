@@ -19,10 +19,11 @@
 
                 ;; 1 to 5 see below for note
                 :srepr (fn [self]
-                    (local ts "")
+                    (var ts "")
                     (for [_ 1 5]
                         (local tmp (. self.data _))
-                        (.. ts (tmp:srepr))
+                        ;; (print (tmp:srepr))
+                        (set ts (.. ts (tmp:srepr) " "))
                     )
                     ts
                 )
