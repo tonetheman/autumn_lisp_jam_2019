@@ -39,7 +39,7 @@
         (var total_count 0)
         (var flush_count 0)
         (var rf_flush_count 0)
-        (local COUNT 50000)
+        (local COUNT 5000)
         (for [_ 0 COUNT]
             (local deck (Deck.create))
             (deck:shuffle2)

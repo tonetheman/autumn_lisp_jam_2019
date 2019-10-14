@@ -3,7 +3,14 @@
     [PokerScore {
         :SCORE_NONE -1
         :SCORE_ROYAL_FLUSH 0
-        :SCORE_FLUSH 1
+        :SCORE_STRAIGHT_FLUSH 1
+        :SCORE_FOUR_OF_KIND 2
+        :SCORE_FULL_HOUSE 3
+        :SCORE_FLUSH 4
+        :SCORE_STRAIGHT 5
+        :SCORE_THREE_OF_KIND 6
+        :SCORE_TWO_PAIR 7
+        :SCORE_ONE_PAIR 8
 
         :create (fn []
             (local self {
@@ -47,6 +54,49 @@
                     res
                 )
                 
+                :is-straight-flush? (fn [self hand]
+                    false
+                )
+
+                :is-full-house? (fn [self hand]
+                    false
+                )
+
+                :is-straight? (fn [self hand]
+                    false
+                )
+
+                :is-three-of-kind? (fn [self hand]
+                    false
+                )
+
+                :is-two-pair? (fn [self hand]
+                    false
+                )
+
+                :is-pair? (fn [self hand]
+                    false
+                )
+
+                :is-four-of-kind? (fn [self hand]
+                    (var res false)
+                    (let [
+                        r1 (. (. hand.data 1) :rank)
+                        r2 (. (. hand.data 2) :rank)
+                        r3 (. (. hand.data 3) :rank)
+                        r4 (. (. hand.data 4) :rank)
+                        r5 (. (. hand.data 5) :rank)
+                        ]
+                        (if (and (= r2 r3) (= r3 r4) (= r4 r5) (~= r1 r2))
+                            (set res true)
+                            (if (and (= r1 r2) (= r2 r3) (= r3 r4) (~= r4 r5))
+                                (set res true)
+                            )
+                        )
+                    )
+                    res
+                )
+
                 :is-royal-flush? (fn [self hand]
                     ;; (print "dbg:is-royal-flush? called")
                     (var res false)
@@ -85,11 +135,32 @@
                             (set res PokerScore.SCORE_ROYAL_FLUSH)
                             ;;(print "RF")
                         )
-                        ;; else try to score something else
-                        (if (self:is-flush? hand)
-                            (set res PokerScore.SCORE_FLUSH)
-                        )
+                        (if (self:is-straight-flush? hand)
+                            (set res PokerScore.SCORE_STRAIGHT_FLUSH)
+                            (if (self:is-four-of-kind? hand)
+                                (set res PokerScore.SCORE_FOUR_OF_KIND)
+                                (if (self:is-full-house? hand)
+                                    (set res PokerScore.SCORE_FULL_HOUSE)
+                                    (if (self:is-flush? hand)
+                                        (set res PokerScore.SCORE_FLUSH)
+                                        (if (self:is-straight? hand)
+                                            (set res PokerScore.SCORE_STRAIGHT)
+                                            (if (self:is-three-of-kind? hand)
+                                                (set res PokerScore.SCORE_THREE_OF_KIND)
+                                                (if (self:is-two-pair? hand)
+                                                    (set res PokerScore.SCORE_TWO_PAIR)
+                                                    (if (self:is-pair? hand)
+                                                        (set res PokerScore.SCORE_ONE_PAIR)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
 
+                            )
+                        )
+           
                     )
                 
                     res
