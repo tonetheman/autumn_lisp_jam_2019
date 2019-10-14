@@ -195,7 +195,35 @@
                 )
 
                 :is-pair? (fn [self hand]
-                    false
+
+                    (var res false)
+                    (let [
+                        r1 (. (. hand.data 1) :rank)
+                        r2 (. (. hand.data 2) :rank)
+                        r3 (. (. hand.data 3) :rank)
+                        r4 (. (. hand.data 4) :rank)
+                        r5 (. (. hand.data 5) :rank)
+                    ]
+                        (do
+                            ;; XXABC
+                            (if (= r1 r2)
+                                (set res true)
+                            )
+                            ;; AXXBC
+                            (if (= r2 r3)
+                                (set res true)
+                            )
+                            ;; ABXXC
+                            (if (= r3 r4)
+                                (set res true)
+                            )
+                            ;; ABCXX
+                            (if (= r4 r5)
+                                (set res true)
+                            )
+                        )
+                    )
+                    res
                 )
 
                 :is-four-of-kind? (fn [self hand]
