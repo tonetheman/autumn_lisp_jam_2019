@@ -43,7 +43,7 @@
             12 42
         ))
     )
-    (if (= suit 1) ;; diamonds
+    (if (= suit 0) ;; diamonds
         (set res (match rank
             0 64
             1 66
