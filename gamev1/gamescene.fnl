@@ -109,6 +109,7 @@
             :hand nil
             :sm scenemanager
 
+            :mousedown false
 
 
 
@@ -140,7 +141,8 @@
             :update (fn [self dt]
                 (let [(mx my md) (mouse)]
                     (if md
-                        (trace "yup")
+                        (set self.mousedown true)
+                        (set self.mousedown false)
                     )
                 )
             )
