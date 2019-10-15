@@ -116,6 +116,7 @@
                 (self:map-cards-to-graphics)
                 
                 ;; TODO: not working
+                (trace "about to shuffle...")
                 (self.deck:shuffle)
             )
 
@@ -133,7 +134,7 @@
                 ;; (sspr 0 10 10)
 
                 ;; get the first card from the deck
-                (local c (. self.deck.cards 0))
+                (local c (self.deck:get 0))
                 
                 ;; display the graphic
                 (sspr c.snum 10 10)
