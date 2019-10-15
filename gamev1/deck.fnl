@@ -11,10 +11,23 @@
             ;; card from
             :current 0
 
+            :get (fn [self i]
+                (. self.cards i)
+            )
+            
+            :srepr (fn [self]
+                (var ts "")
+                (for [i 0 51]
+                    (local c (self:get i))
+                    (set ts (.. ts (c:srepr) " "))
+                )
+                ts
+            )
+
             ;; print the cards
             :repr (fn [self]
                 (for [i 0 51]
-                    (let [c (. self.cards i)]
+                    (let [c (self:get i)]
                         (c.repr)
                     )
                 )
