@@ -20,7 +20,7 @@
                 )
             )
 
-            :shuffle2 (fn [self]
+            :shuffle (fn [self]
                 (for [_ 0 10]
                     (for [i 0 51]
                         (let [r (math.random 51)

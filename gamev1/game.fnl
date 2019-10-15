@@ -1,10 +1,4 @@
 
-;; all the poker and card logic here
-(local Card (require :card))
-(local Deck (require :deck))
-(local Hand (require :hand))
-(local PokerScore (require :pokerscore))
-
 ;; load up classes first
 (local SceneManager (require :scenemanager))
 (local LoadingScene (require :loadingscene))
@@ -16,21 +10,6 @@
 
 (local _loadingscene (LoadingScene.create sm))
 (local _gamescene (GameScene.create sm))
-
-;; my spr routine
-;; only here to keep complexity down
-;; needed this for 2x2 sprites
-(local sspr
-    (fn [id x y]
-        (local colorkey 0)
-        (local scale 1)
-        (local flip 0)
-        (local rotate 0)
-        (local w 2) ;; needed cause the cards are 2x2
-        (local h 2)
-        (spr id x y colorkey scale flip rotate w h)
-    )
-)
 
 (local init (fn []
     ;; add the scenes to the SceneManager
