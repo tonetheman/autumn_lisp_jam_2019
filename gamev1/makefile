@@ -9,3 +9,6 @@ all: game.fnl
 	fennel --compile gamescene.fnl > gamescene.lua
 	fennel --compile game.fnl > game.lua
 
+
+launch:
+	tic80 crud.tic  -code-watch game.lua
