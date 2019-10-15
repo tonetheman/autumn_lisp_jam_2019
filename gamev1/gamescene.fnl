@@ -110,6 +110,7 @@
             :sm scenemanager
 
             :enter (fn [self]
+                (math.randomseed (time))
                 ;; create the Deck one time on enter
                 (set self.deck (Deck.create))
                 ;; need to map graphics to the cards
