@@ -19,6 +19,10 @@
                 (tset self.cards i value)
             )
             
+            :reset (fn [self]
+                (set self.current 0)
+            )
+            
             :srepr (fn [self]
                 (var ts "")
                 (for [i 0 51]

@@ -36,17 +36,20 @@
                     ts
                 )
             
+
+                :deal (fn [self]
+                    ;; needed 1 to 5 for stupid sort
+                    (for [_ 1 5]
+                        (self:set _ (deck:pop))
+                    )
+                )
+                
             })
 
 
 
 
         
-            ;; ctor stuff here
-            ;; needed 1 to 5 for stupid sort
-            (for [_ 1 5]
-                (self:set _ (deck:pop))
-            )
 
             ;; return self
             self

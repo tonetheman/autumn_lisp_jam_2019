@@ -94,7 +94,7 @@
             12 234
         ))
     )
-
+    res
 ))
 
 
@@ -106,19 +106,31 @@
 
             ;; 
             :deck nil
-
+            :hand nil
             :sm scenemanager
+
+
+
+
+            :game-reset (fn [self]
+
+                ;;(trace "about to shuffle...")
+                (self.deck:reset) ;; sets current card back to 0
+                (self.deck:shuffle) ;; reshuffle the deck
+                (self.hand:deal)
+            )
 
             :enter (fn [self]
                 (math.randomseed (time))
                 ;; create the Deck one time on enter
                 (set self.deck (Deck.create))
+                ;; create the hand one time on enter
+                (set self.hand (Hand.create self.deck))
                 ;; need to map graphics to the cards
                 (self:map-cards-to-graphics)
                 
-                ;; TODO: not working
-                (trace "about to shuffle...")
-                (self.deck:shuffle)
+                (self:game-reset)
+
             )
 
             :exit (fn [self]
@@ -126,7 +138,11 @@
             )
             
             :update (fn [self dt]
-            
+                (let [(mx my md) (mouse)]
+                    (if md
+                        (trace "yup")
+                    )
+                )
             )
             
             :draw (fn [self]
@@ -135,10 +151,15 @@
                 ;; (sspr 0 10 10)
 
                 ;; get the first card from the deck
-                (local c (self.deck:get 0))
+                ;; (local c (self.deck:get 0))
                 
                 ;; display the graphic
-                (sspr c.snum 10 10)
+                ;; (sspr c.snum 10 10)
+
+                (for [i 1 5]
+                    (local c (self.hand:get i))
+                    (sspr c.snum (* i 32) 10)
+                )
             )
 
             :map-cards-to-graphics (fn [self]
