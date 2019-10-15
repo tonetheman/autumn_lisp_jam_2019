@@ -9,10 +9,18 @@
                 ;; the cards you pulled
                 :data {}
             
+                :get (fn [self i]
+                    ( . self.data i)
+                )
+                
+                :set (fn [self i value]
+                    (tset self.data i value)
+                )
+                
                 ;; 1 to 5 see below for note
                 :repr (fn [self]
                     (for [_ 1 5]
-                        (local tmp (. self.data _))
+                        (local tmp (self:get _))
                         (print (tmp:repr))
                     )
                 )
@@ -21,7 +29,7 @@
                 :srepr (fn [self]
                     (var ts "")
                     (for [_ 1 5]
-                        (local tmp (. self.data _))
+                        (local tmp (self:get _))
                         ;; (print (tmp:srepr))
                         (set ts (.. ts (tmp:srepr) " "))
                     )
@@ -37,7 +45,7 @@
             ;; ctor stuff here
             ;; needed 1 to 5 for stupid sort
             (for [_ 1 5]
-                (tset self.data _ (deck:pop))
+                (self:set _ (deck:pop))
             )
 
             ;; return self
