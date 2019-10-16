@@ -187,6 +187,12 @@
                     )
                 )
 
+                (if pressedB
+                    (do
+                        (trace "pressed b reset deck and hand")
+                        (self:game-reset)
+                    )
+                )
             )
             
             :draw (fn [self]
