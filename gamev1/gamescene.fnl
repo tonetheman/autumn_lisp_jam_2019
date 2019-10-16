@@ -151,7 +151,9 @@
                 (local pressedLeft (btnp 2))
                 (local pressedRight (btnp 3))
                 (local pressedA (btnp 4))
+                (local pressedB (btnp 5))
                 (local pressedX (btnp 6))
+                (local pressedY (btnp 7))
 
                 (if pressedLeft
                     (if (> self.current_card 1)
