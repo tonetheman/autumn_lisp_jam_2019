@@ -111,8 +111,6 @@
 
             ;; current card on the GUI
             :current_card 1
-            :visible_cards { 1 false 2 false 3 false 4 false 5 false }
-
 
             :game-reset (fn [self]
 
@@ -170,16 +168,21 @@
                 (if pressedA
                     ;; need to tell gui to no longer draw card
                     ;; and also for pulling new cards
-                    (if (. self.visible_cards self.current_card)
-                    (tset self.visible_cards self.current_card false)
-                    (tset self.visible_cards self.current_card true)
+                    (do
+                        ;;(trace (.. "current card " self.current_card ))
+                        (if (self.hand:get-discard self.current_card)
+                            (self.hand:set-discard self.current_card false)
+                            (self.hand:set-discard self.current_card true)
+                        )
+                        ;;(trace (.. (self.hand:get-discard self.current_card)))
                     )
                 )
 
                 (if pressedX
-                    (trace "x")
-                    ;; redraw
-                    ;; score
+                    (do
+                        (trace "REDEAL....")
+                        (self.hand:redeal)
+                    )
                 )
 
             )
@@ -200,11 +203,13 @@
                     (sspr c.snum (* i 32) 10)
                 )
                 (for [i 1 5]
-                    (if (. self.visible_cards i)
+                    (if (self.hand:get-discard i)
                         (sspr 44 (* i 32) 10)
                     )
                 )
                 (rect (* self.current_card 32) 40 10 10 14)
+                (print "press z to mark a card for discard" 10 100)
+                (print "press a to draw new cards and score" 10 108)
             )
 
             :map-cards-to-graphics (fn [self]

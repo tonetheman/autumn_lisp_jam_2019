@@ -8,15 +8,24 @@
 
                 ;; the cards you pulled
                 :data {}
-            
+                :discarddata {}
+
                 :get (fn [self i]
                     ( . self.data i)
+                )
+                
+                :get-discard (fn [self i]
+                    (. self.discarddata i)
                 )
                 
                 :set (fn [self i value]
                     (tset self.data i value)
                 )
-                
+
+                :set-discard (fn [self i value]
+                    (tset self.discarddata i value)
+                )
+
                 ;; 1 to 5 see below for note
                 :repr (fn [self]
                     (for [_ 1 5]
@@ -37,10 +46,33 @@
                 )
             
 
+                :reset-discard (fn [self]
+                    (for [_ 1 5]
+                        ;; we are discarding no cards
+                        (self:set-discard _ false)
+                    )
+                )
+
                 :deal (fn [self]
                     ;; needed 1 to 5 for stupid sort
                     (for [_ 1 5]
                         (self:set _ (deck:pop))
+                    )
+                    ;; when we deal we need to reset discard data
+                    (self:reset-discard)
+                )
+
+                :redeal (fn [self]
+                    (for [_ 1 5]
+                        (if (self:get-discard _)
+                            (do
+                                ;; this is a discard
+                                ;; get a new card now
+                                (self:set _ (deck:pop))
+                                ;; mark as not discarded
+                                (self:set-discard _ false)
+                            )
+                        )
                     )
                 )
                 
