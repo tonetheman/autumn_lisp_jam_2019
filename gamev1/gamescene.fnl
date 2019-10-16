@@ -109,8 +109,9 @@
             :hand nil
             :sm scenemanager
 
-            :mousedown false
-
+            ;; current card on the GUI
+            :current_card 1
+            :visible_cards { 1 false 2 false 3 false 4 false 5 false }
 
 
             :game-reset (fn [self]
@@ -138,13 +139,49 @@
                 ;; (print "exit scene2" self)
             )
             
+            :handle_click (fn [self]
+                (trace "clik")
+                (set self.mousedown false) ;; set back so we can get clicks
+            )
+            
             :update (fn [self dt]
-                (let [(mx my md) (mouse)]
-                    (if md
-                        (set self.mousedown true)
-                        (set self.mousedown false)
+                ;; mouse handling is mind numbing hard on tic80
+                ;; handling repeat presses is beyond my thought patterns
+                ;; (let [(mx my md) (mouse)])
+
+
+                (local pressedLeft (btnp 2))
+                (local pressedRight (btnp 3))
+                (local pressedA (btnp 4))
+                (local pressedX (btnp 6))
+
+                (if pressedLeft
+                    (if (> self.current_card 1)
+                        (set self.current_card (- self.current_card 1))
+                    )
+                    
+                )
+                (if pressedRight
+                    (if (< self.current_card 5)
+                        (set self.current_card (+ self.current_card 1))
                     )
                 )
+
+                (if pressedA
+                    ;; need to tell gui to no longer draw card
+                    ;; and also for pulling new cards
+                    (if (. self.visible_cards self.current_card)
+                    (tset self.visible_cards self.current_card false)
+                    (tset self.visible_cards self.current_card true)
+                    )
+                )
+
+                (if pressedX
+                    (trace "x")
+                    ;; redraw
+                    ;; score
+                )
+
             )
             
             :draw (fn [self]
@@ -162,6 +199,12 @@
                     (local c (self.hand:get i))
                     (sspr c.snum (* i 32) 10)
                 )
+                (for [i 1 5]
+                    (if (. self.visible_cards i)
+                        (sspr 44 (* i 32) 10)
+                    )
+                )
+                (rect (* self.current_card 32) 40 10 10 14)
             )
 
             :map-cards-to-graphics (fn [self]
