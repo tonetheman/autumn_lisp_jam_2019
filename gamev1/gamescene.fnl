@@ -110,6 +110,7 @@
             :sm scenemanager
             :ps nil ;; PokerScore
             :_s_score nil ;; string version of score
+            :money  200 ;; start with 200 dollars
 
             ;; current card on the GUI
             :current_card 1
@@ -123,6 +124,10 @@
                 (set self._s_score nil)
             )
 
+            :next-hand (fn [self]
+                (self:game-reset)
+            )
+            
             :enter (fn [self]
                 (math.randomseed (time))
                 ;; create the Deck one time on enter
@@ -187,33 +192,36 @@
 
                 (if pressedX
                     (do
-                        (trace "REDEAL....")
+                        (trace "pulls new cards and scores....")
                         (self.hand:redeal)
+                        (local tmp (self.hand:shallow-copy))
+                        (local res (self.ps:score tmp))
+                        (local res-s (self.ps:tr-score res))
+                        (set self._s_score res-s)
+                        (self:handle-bets res)
                     )
                 )
 
                 (if pressedY
                     (do
                         (trace "pressed Y")
-                        (local tmp (self.hand:shallow-copy))
-                        (trace "after shallow copy")
-                        (local res (self.ps:score tmp))
-                        (trace (.. "res is " (tostring res)))
-                        (local res-s (self.ps:tr-score res))
-                        (trace (.. "string res is " res-s))
-                        (print (.. "score : " res-s) 10 92)
-                        (set self._s_score res-s)
+                        
+                       
+                        
                     )
                 )
                 
                 (if pressedB
                     (do
-                        (trace "pressed b reset deck and hand")
-                        (self:game-reset)
+                        (trace "pressed b")
+                        (self:next-hand)
                     )
                 )
             )
             
+            :handle-bets (fn [self score]
+            )
+
             :draw (fn [self]
                 (cls 0)
                 ;; woooo this works
@@ -236,10 +244,12 @@
                 )
                 (rect (* self.current_card 32) 40 10 10 14)
 
-                (print "press x for complete re-deal" 10 92)
-                (print "press z to mark a card for discard" 10 100)
-                (print "press a to draw new cards and score" 10 108)
-                (print "press s for score" 10 116)
+                (print "use left and right to move" 10 80)
+                (print "press z to mark a card for discard" 10 88)
+                (print "press a to draw new cards and score" 10 96)
+                (print "press x for next hand" 10 104)
+                (print (.. "money: " (tostring self.money)) 10 112)
+                
                 (if (~= self._s_score nil)
                     (print (.. "score : " self._s_score) 10 124)
                 )
