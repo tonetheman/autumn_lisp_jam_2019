@@ -1,4 +1,5 @@
 
+(local justblue 142)
 (local bet5 174)
 (local bet1 172)
 (var last_mouse_value false)
@@ -59,8 +60,14 @@
 ))
 
 (local draw (fn []
-    (cls 0)
-    (sspr bet5 10 10)
+
+    ;; 1 button
+    (sspr justblue 10 32)
+    (print "1" 15 35 15 false 2)
+
+    ;; 5 button
+    (sspr justblue 32 32)
+    (print "5" 35 35 15 false 2)
 ))
 
 (global TIC (fn []
