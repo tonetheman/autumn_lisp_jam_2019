@@ -61,6 +61,8 @@
 
 (local draw (fn []
 
+    (map 1 1 30 17)
+
     ;; 1 button
     (sspr justblue 10 32)
     (print "1" 15 35 15 false 2)
