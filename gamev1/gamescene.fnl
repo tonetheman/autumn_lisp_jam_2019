@@ -206,7 +206,9 @@
                     (do
                         (trace "pressed Y")
                         
-                       
+                        (local res 
+                            (self.ps:pay-table PokerScore.SCORE_ROYAL_FLUSH 1))
+                        (trace res)
                         
                     )
                 )

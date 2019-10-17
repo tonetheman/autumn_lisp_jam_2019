@@ -345,6 +345,18 @@
 
                     res
                 )
+
+
+                ;; see here for possible payouts
+                
+                :pay-table (fn [self score bet]
+                    (match bet
+                        1 (match score
+                            PokerScore.SCORE_ROYAL_FLUSH 250
+                            )
+                        2 (trace "got 2")
+                    )
+                )
             })
             self
         )
