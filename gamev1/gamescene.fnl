@@ -120,6 +120,7 @@
                 (self.deck:reset) ;; sets current card back to 0
                 (self.deck:shuffle) ;; reshuffle the deck
                 (self.hand:deal)
+                (set self._s_score nil)
             )
 
             :enter (fn [self]
