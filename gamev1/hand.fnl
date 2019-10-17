@@ -10,6 +10,16 @@
                 :data {}
                 :discarddata {}
 
+                :shallow-copy (fn [self]
+                    (local _ {
+                        :data {}
+                    })
+                    (for [i 1 5]
+                        (tset _.data i (self:get i))
+                    )
+                    _
+                )
+
                 :get (fn [self i]
                     ( . self.data i)
                 )

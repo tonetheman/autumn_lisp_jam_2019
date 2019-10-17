@@ -108,6 +108,8 @@
             :deck nil
             :hand nil
             :sm scenemanager
+            :ps nil ;; PokerScore
+            :_s_score nil ;; string version of score
 
             ;; current card on the GUI
             :current_card 1
@@ -128,6 +130,8 @@
                 (set self.hand (Hand.create self.deck))
                 ;; need to map graphics to the cards
                 (self:map-cards-to-graphics)
+
+                (set self.ps (PokerScore.create))
                 
                 (self:game-reset)
 
@@ -187,6 +191,20 @@
                     )
                 )
 
+                (if pressedY
+                    (do
+                        (trace "pressed Y")
+                        (local tmp (self.hand:shallow-copy))
+                        (trace "after shallow copy")
+                        (local res (self.ps:score tmp))
+                        (trace (.. "res is " (tostring res)))
+                        (local res-s (self.ps:tr-score res))
+                        (trace (.. "string res is " res-s))
+                        (print (.. "score : " res-s) 10 92)
+                        (set self._s_score res-s)
+                    )
+                )
+                
                 (if pressedB
                     (do
                         (trace "pressed b reset deck and hand")
@@ -216,9 +234,16 @@
                     )
                 )
                 (rect (* self.current_card 32) 40 10 10 14)
+
+                (print "press x for complete re-deal" 10 92)
                 (print "press z to mark a card for discard" 10 100)
                 (print "press a to draw new cards and score" 10 108)
+                (print "press s for score" 10 116)
+                (if (~= self._s_score nil)
+                    (print (.. "score : " self._s_score) 10 124)
+                )
             )
+
 
             :map-cards-to-graphics (fn [self]
                 ;;
