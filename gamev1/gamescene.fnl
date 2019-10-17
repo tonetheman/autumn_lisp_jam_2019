@@ -111,6 +111,9 @@
             :ps nil ;; PokerScore
             :_s_score nil ;; string version of score
             :money  200 ;; start with 200 dollars
+            
+            ;; current bet for the user
+            :currentbet 1 ;; can be 1 or 5
 
             ;; current card on the GUI
             :current_card 1
