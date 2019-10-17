@@ -353,6 +353,14 @@
                     (match bet
                         1 (match score
                             PokerScore.SCORE_ROYAL_FLUSH 250
+                            PokerScore.SCORE_STRAIGHT_FLUSH 50
+                            PokerScore.SCORE_FOUR_OF_KIND 25
+                            PokerScore.SCORE_FULL_HOUSE 9
+                            PokerScore.SCORE_FLUSH 6
+                            PokerScore.SCORE_STRAIGHT 4
+                            PokerScore.SCORE_THREE_OF_KIND 3
+                            PokerScore.SCORE_TWO_PAIR 2
+                            ;; MISSING pair of jacks+
                             )
                         2 (trace "got 2")
                     )
