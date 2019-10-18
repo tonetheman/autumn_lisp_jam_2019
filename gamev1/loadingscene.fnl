@@ -11,7 +11,7 @@
 
             :counter 0
 
-            :msg "game name here"
+            :msg "lispy video poker"
 
             :enter (fn [self]
                 ;; (print "enter scene2" self)
