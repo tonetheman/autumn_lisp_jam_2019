@@ -13,7 +13,7 @@
 (local sspr
     (fn [id x y]
         (local colorkey 0)
-        (local scale 1)
+        (local scale 2)
         (local flip 0)
         (local rotate 0)
         (local w 2) ;; needed cause the cards are 2x2
@@ -261,7 +261,7 @@
             :draw (fn [self]
                 (cls 0)
 
-                (map 0 0 29 15)
+                (map 0 0)
                 ;; woooo this works
                 ;; (sspr 0 10 10)
 
@@ -271,16 +271,18 @@
                 ;; display the graphic
                 ;; (sspr c.snum 10 10)
 
+                (local offset_to_left 20)
+
                 (for [i 1 5]
                     (local c (self.hand:get i))
-                    (sspr c.snum (* i 32) 10)
+                    (sspr c.snum (- (* i 42) offset_to_left)  5)
                 )
                 (for [i 1 5]
                     (if (self.hand:get-discard i)
-                        (sspr 44 (* i 32) 10)
+                        (sspr 44 (- (* i 42) offset_to_left) 5)
                     )
                 )
-                (rect (* self.current_card 32) 40 10 10 14)
+                (rect (* self.current_card 36) 40 10 10 14)
 
                 (print "use left and right to move" 10 80)
                 (print "press z to mark a card for discard" 10 88)
