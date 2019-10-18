@@ -97,7 +97,6 @@
     res
 ))
 
-
 (var Scene {})
 (fn Scene.create [scenemanager]
     (local self
@@ -109,6 +108,11 @@
             :hand nil
             :sm scenemanager
             :ps nil ;; PokerScore
+
+            ;; mouse handling here
+            :last_mouse_value false
+            :gmouse_mouse_is_down false
+
             :_s_score nil ;; string version of score
             :money  200 ;; start with 200 dollars
             
@@ -149,16 +153,43 @@
             :exit (fn [self]
                 ;; (print "exit scene2" self)
             )
-            
-            :handle_click (fn [self]
-                (trace "clik")
-                (set self.mousedown false) ;; set back so we can get clicks
+
+            ;; called one time for mouse down
+            :mouse-down-handler (fn [self mx my]
+                (set self.gmouse-is-down true)
+                (trace (.. "mouse down handler" mx my))
             )
-            
+
+            ;; called one time for mouse up
+            :mouse-up-handler (fn [self mx my]
+                (set self.gmouse-is-down false)
+                (trace (.. "mouse up handler" mx my))
+            )
+
+
             :update (fn [self dt]
-                ;; mouse handling is mind numbing hard on tic80
-                ;; handling repeat presses is beyond my thought patterns
-                ;; (let [(mx my md) (mouse)])
+
+                ;; this let contains all of the mouse
+                ;; handling logic for mouse down and mouse up
+                (let [(mx my md) (mouse)]
+
+                    (if (and md (= self.last_mouse_value false))
+                        ;; if mousedown == true and false
+                        ;; this is the first mouse click
+                        ;;(trace "first mouse click")
+                        (self:mouse-down-handler mx my)
+                    )
+
+                    ;; if the mouse is marked as down
+                    ;; and you get a false from the hardware md
+                    ;; this is the first mouse up
+                    (if (and self.gmouse-is-down (= md false))
+                        (self:mouse-up-handler mx my)
+                    )
+                    
+                    ;; remember the last mouse value
+                    (set self.last_mouse_value md)
+                )
 
 
                 (local pressedLeft (btnp 2))
@@ -229,6 +260,8 @@
 
             :draw (fn [self]
                 (cls 0)
+
+                (map 0 0 29 15)
                 ;; woooo this works
                 ;; (sspr 0 10 10)
 
