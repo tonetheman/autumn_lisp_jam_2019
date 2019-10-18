@@ -191,7 +191,8 @@
                     (set self.last_mouse_value md)
                 )
 
-
+                (local pressedUp (btnp 0))
+                (local pressedDown (btnp 1))
                 (local pressedLeft (btnp 2))
                 (local pressedRight (btnp 3))
                 (local pressedA (btnp 4))
@@ -210,6 +211,19 @@
                         (set self.current_card (+ self.current_card 1))
                     )
                 )
+                
+                ;; highlights the draw button if not down already
+                ;; if already down then does nothing
+                (if pressedDown
+                    (trace "down")
+                )
+
+                ;; moves back up to cards
+                ;; if already on cards does nothing
+                (if pressedUp
+                    (trace "up")
+                )
+
 
                 (if pressedA
                     ;; need to tell gui to no longer draw card
@@ -282,14 +296,24 @@
                         (sspr 44 (- (* i 42) offset_to_left) 5)
                     )
                 )
+                
                 (rect (* self.current_card 36) 40 10 10 14)
 
+                ;; deal button
+                (rect 195 72 24 8 14)
+                (print "deal" 195 72 0)
+
+
                 (print "use left and right to move" 10 80)
-                (print "press z to mark a card for discard" 10 88)
-                (print "press a to draw new cards and score" 10 96)
-                (print "press x for next hand" 10 104)
-                (print (.. "money: " (tostring self.money)) 10 112)
-                
+                (print "down will move to deal" 10 88)
+
+                ;;(print "press z to mark a card for discard" 10 88)
+                ;;(print "press a to draw new cards and score" 10 96)
+                ;;(print "press x for next hand" 10 104)
+                (print (.. "bank: " (tostring self.money)) 10 112)
+                ;;(print (.. "bet:  (tostring self.currentbet)) 50 112)
+                (print (.. "bet: " (tostring self.currentbet)) 150 112)
+
                 (if (~= self._s_score nil)
                     (print (.. "score : " self._s_score) 10 124)
                 )
