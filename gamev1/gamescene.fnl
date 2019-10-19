@@ -5,6 +5,30 @@
 (local Hand (require :hand))
 (local PokerScore (require :pokerscore))
 
+;;
+(local TRect {
+    :create (fn [x y w h]
+        {
+            :id i ;; this will match the sprite number
+            :x x
+            :y y
+            :w w
+            :h h
+  
+            :hit (fn [self x y]
+                (var res false)
+                (if (and (>= x self.x) (<= x (+ self.x self.w)))
+                    (if (and (>= y self.y) (<= y (+ self.y self.h)))
+                        ;;
+                        (set res true)
+                    )
+                )
+                res
+            )
+        }
+    )
+})
+
 (local (w h) (values 240 136))
 
 ;; my spr routine
@@ -122,6 +146,9 @@
             ;; current card on the GUI
             :current_card 1
 
+            ;; rects for mouse hits
+            :rects {}
+
             :game-reset (fn [self]
 
                 ;;(trace "about to shuffle...")
@@ -136,6 +163,15 @@
             )
             
             :enter (fn [self]
+    
+                ;; need to create rects for the cards
+                (for [i 1 5]
+                    (local offset_to_left 20)
+                    (local computedx (- (* i 42) offset_to_left))
+                    (local tmp (TRect.create computedx 5 16 32))
+                    (tset self.rects i tmp)
+                )
+
                 (math.randomseed (time))
                 ;; create the Deck one time on enter
                 (set self.deck (Deck.create))
@@ -157,13 +193,33 @@
             ;; called one time for mouse down
             :mouse-down-handler (fn [self mx my]
                 (set self.gmouse-is-down true)
-                (trace (.. "mouse down handler" mx my))
+                (trace (.. "mouse down handler" mx " " my))
             )
 
             ;; called one time for mouse up
             :mouse-up-handler (fn [self mx my]
                 (set self.gmouse-is-down false)
-                (trace (.. "mouse up handler" mx my))
+                (trace (.. "mouse up handler" mx " " my))
+                
+                (for [i 1 5]
+                    ;; set 
+                    (local d (. self.rects i))
+                    (if (d:hit mx my)
+                        (do
+                            (trace (.. i " " mx " "  my))
+
+
+                            (if (self.hand:get-discard i)
+                                (self.hand:set-discard i false)
+                                (self.hand:set-discard i true)
+                            )
+
+
+
+                        )
+                    )
+                )
+
             )
 
 
@@ -289,7 +345,9 @@
 
                 (for [i 1 5]
                     (local c (self.hand:get i))
-                    (sspr c.snum (- (* i 42) offset_to_left)  5)
+                    (local computedx (- (* i 42) offset_to_left))
+                    ;; (trace (.. i " " computedx))
+                    (sspr c.snum  computedx 5)
                 )
                 (for [i 1 5]
                     (if (self.hand:get-discard i)
