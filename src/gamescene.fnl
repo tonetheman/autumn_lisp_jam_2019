@@ -353,6 +353,9 @@
             )
             
             :handle-bets (fn [self score]
+                (local res (self.ps:pay-table score self.currentbet))
+                (trace "handle-bets" res)
+                (set self.money (+ self.money res))
             )
 
             :draw (fn [self]

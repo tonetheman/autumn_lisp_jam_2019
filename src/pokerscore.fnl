@@ -350,20 +350,29 @@
                 ;; see here for possible payouts
                 
                 :pay-table (fn [self score bet]
-                    (match bet
-                        1 (match score
-                            PokerScore.SCORE_ROYAL_FLUSH 250
-                            PokerScore.SCORE_STRAIGHT_FLUSH 50
-                            PokerScore.SCORE_FOUR_OF_KIND 25
-                            PokerScore.SCORE_FULL_HOUSE 9
-                            PokerScore.SCORE_FLUSH 6
-                            PokerScore.SCORE_STRAIGHT 4
-                            PokerScore.SCORE_THREE_OF_KIND 3
-                            PokerScore.SCORE_TWO_PAIR 2
-                            ;; MISSING pair of jacks+
-                            )
-                        2 (trace "got 2")
-                    )
+                    (trace (.. "pay table called " score " " bet))
+                    (local amt
+                        (match bet
+                            1 (match score
+                                PokerScore.SCORE_ROYAL_FLUSH 250
+                                PokerScore.SCORE_STRAIGHT_FLUSH 50
+                                PokerScore.SCORE_FOUR_OF_KIND 25
+                                PokerScore.SCORE_FULL_HOUSE 9
+                                PokerScore.SCORE_FLUSH 6
+                                PokerScore.SCORE_STRAIGHT 4
+                                PokerScore.SCORE_THREE_OF_KIND 3
+                                PokerScore.SCORE_TWO_PAIR 2
+                                PokerScore.SCORE_ONE_PAIR 1
+                                PokerScore.SCORE_NONE -1
+                                ;; MISSING pair of jacks+
+                                )
+                            2 (trace "got 2")
+                        )
+                    ) ;; local amount
+                    (trace (.. "amount is set to " amt))
+                    (local res (* bet amt))
+                    (trace (.. "computed amount " res))
+                    res
                 )
             })
             self
