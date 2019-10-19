@@ -13,3 +13,7 @@ all: game.fnl
 
 launch:
 	tic80 crud.tic  -code-watch game.lua
+
+
+amal:
+	tic80 crud.tic  -code-watch amal.lua
