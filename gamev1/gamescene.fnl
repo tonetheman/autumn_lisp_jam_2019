@@ -363,9 +363,17 @@
                 ;; (rect (* self.current_card 36) 40 10 10 14)
 
                 ;; deal button
-                (rect 195 72 24 8 14)
+                (rect deal_v_rect.x deal_v_rect.y 
+                    deal_v_rect.w deal_v_rect.h 14)
                 (print "deal" 195 72 0)
 
+                ;; bet 1
+                (rect 100 72 30 10 14)
+                (print "bet1" 100 72 0)
+
+                ;; bet 5
+                (rect 100 92 30 10 14)
+                (print "bet5" 100 92 0)
 
                 (print "use mouse" 10 80)
                 ;; (print "down will move to deal" 10 88)
