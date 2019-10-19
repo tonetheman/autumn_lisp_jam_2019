@@ -1,27 +1,7 @@
 # autumn lisp 2019 game jam
 
-## experiment3
-needed to make scene managers work with strings when you switch scenes
 
-## tic80 4
-loads a loading scene and then after 1 second switches to the game scene
-use scenemanager with start-name now. everything seems to work
+Source is found in src directory.
 
-## tic80 3
-started getting 2 scenese working
-had to scene manager working in a way that is useful
+There are a lot of step directories which are intermediate work along the way to get to my source.
 
-## experiment 2
-testing just fnl code for var and require
-
-## experiment1
-testing how to make classes work like I think
-
-also how to get a scene manager to work in this context
-
-## tic80 2
-Got a scene to work. and a require
-
-## tic80  1
-How to run with tic80
-tic80 tester.tic -code-watch main.lua
