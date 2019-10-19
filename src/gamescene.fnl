@@ -188,6 +188,9 @@
                 
                 (self:game-reset)
 
+                (for [i 1 5]
+                    (self.hand:set-discard i true)
+                )
             )
 
             :exit (fn [self]
