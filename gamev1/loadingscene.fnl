@@ -1,8 +1,8 @@
 
 (local (w h) (values 240 136))
 
-(var Scene {})
-(fn Scene.create [scenemanager]
+(var LoadingScene {})
+(fn LoadingScene.create [scenemanager]
     (local self
         {
             :name :loadingscene

@@ -1,9 +1,4 @@
 
-;; load up classes first
-(local SceneManager (require :scenemanager))
-(local LoadingScene (require :loadingscene))
-(local GameScene (require :gamescene))
-
 ;; manages starting and stopping scenes
 ;; only 1 scene manager
 (local sm (SceneManager.create))

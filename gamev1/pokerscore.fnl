@@ -1,6 +1,6 @@
 
-(let 
-    [PokerScore {
+(local PokerScore
+{
         :SCORE_NONE -1
         :SCORE_ROYAL_FLUSH 0
         :SCORE_STRAIGHT_FLUSH 1
@@ -368,6 +368,5 @@
             })
             self
         )
-    }]
-    PokerScore
+    }
 )

@@ -1,10 +1,4 @@
 
-;; all the poker and card logic here
-(local Card (require :card))
-(local Deck (require :deck))
-(local Hand (require :hand))
-(local PokerScore (require :pokerscore))
-
 ;;
 (local TRect {
     :create (fn [x y w h]
@@ -129,8 +123,8 @@
     res
 ))
 
-(var Scene {})
-(fn Scene.create [scenemanager]
+(var GameScene {})
+(fn GameScene.create [scenemanager]
     (local self
         {
             :name :gamescene

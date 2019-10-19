@@ -1,6 +1,4 @@
 
-(local Card (require :card))
-
 (local Deck {
     :create (fn []
         (local self {
@@ -84,4 +82,3 @@
     )
 })
 
-Deck
