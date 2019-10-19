@@ -31,7 +31,10 @@
 
 (local (w h) (values 240 136))
 (local offset_to_left 20)
-(local deal_v_rect (TRect.create 195 72 24 8 14))
+(local deal_v_rect (TRect.create 195 72 24 8))
+(local bet1_v_rect (TRect.create 100 72 30 10))
+(local bet5_v_rect (TRect.create 100 92 30 10))
+                
 
 ;; my spr routine
 ;; only here to keep complexity down
@@ -209,12 +212,10 @@
                     (if (d:hit mx my)
                         (do
                             (trace (.. i " " mx " "  my))
-
                             (if (self.hand:get-discard i)
                                 (self.hand:set-discard i false)
                                 (self.hand:set-discard i true)
                             )
-
                         )
                     )
                 )
@@ -225,6 +226,21 @@
                         (trace "deal...")
                     )
                 )
+
+                ;; now check for bet buttons
+                (if (bet1_v_rect:hit mx my)
+                    (do
+                        (trace "bet1")
+                        (set self.currentbet 1)
+                    )
+                )
+                (if (bet5_v_rect:hit mx my)
+                    (do
+                        (trace "bet5")
+                        (set self.currentbet 5)
+                    )
+                )
+                
 
             )
 
