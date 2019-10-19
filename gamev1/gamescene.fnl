@@ -31,10 +31,13 @@
 
 (local (w h) (values 240 136))
 (local offset_to_left 20)
-(local deal_v_rect (TRect.create 195 72 24 8))
-(local bet1_v_rect (TRect.create 100 72 30 10))
+(local cards_y_top 20) ;; top of cards for y
+(local deal_v_rect (TRect.create 195 92 24 8))
+(local bet1_v_rect (TRect.create 60 92 30 10))
 (local bet5_v_rect (TRect.create 100 92 30 10))
-                
+
+(local STATE_WAITING_FOR_DEAL 0) ;; no cards dealt yet
+(local STATE_WAITING_FOR_DISCARDS 1) ;; initial deal has happened                
 
 ;; my spr routine
 ;; only here to keep complexity down
@@ -154,6 +157,9 @@
             ;; rects for mouse hits
             :rects {}
 
+            ;; state of the game
+            :state STATE_WAITING_FOR_DEAL
+
             :game-reset (fn [self]
 
                 ;;(trace "about to shuffle...")
@@ -172,7 +178,7 @@
                 ;; need to create rects for the cards
                 (for [i 1 5]
                     (local computedx (- (* i 42) offset_to_left))
-                    (local tmp (TRect.create computedx 5 16 32))
+                    (local tmp (TRect.create computedx cards_y_top 16 32))
                     (tset self.rects i tmp)
                 )
 
@@ -203,43 +209,93 @@
             ;; called one time for mouse up
             :mouse-up-handler (fn [self mx my]
                 (set self.gmouse-is-down false)
-                ;; (trace (.. "mouse up handler" mx " " my))
-                
-                ;; check for card interactions
-                (for [i 1 5]
-                    ;; set 
-                    (local d (. self.rects i))
-                    (if (d:hit mx my)
-                        (do
-                            (trace (.. i " " mx " "  my))
-                            (if (self.hand:get-discard i)
-                                (self.hand:set-discard i false)
-                                (self.hand:set-discard i true)
+
+
+                (match self.state
+                STATE_WAITING_FOR_DEAL 
+                    (do
+
+                        ;; for state waiting on deal
+                        ;; only deal and bet buttons work
+
+
+                        ;; now check for deal button
+                        (if (deal_v_rect:hit mx my)
+                            (do
+                                (trace "deal clicked...")
+                                (self:next-hand)
+                                ;; state changed to now wanting
+                                ;; discards
+                                (set self.state STATE_WAITING_FOR_DISCARDS)
                             )
                         )
+
+                        ;; now check for bet buttons
+                        (if (bet1_v_rect:hit mx my)
+                            (do
+                                (trace "bet1")
+                                (set self.currentbet 1)
+                            )
+                        )
+                        (if (bet5_v_rect:hit mx my)
+                            (do
+                                (trace "bet5")
+                                (set self.currentbet 5)
+                            )
+                        )
+
+
+
                     )
+                STATE_WAITING_FOR_DISCARDS
+                    (do
+
+                        ;; check for card interactions
+                        (for [i 1 5]
+                            ;; set 
+                            (local d (. self.rects i))
+                            (if (d:hit mx my)
+                                (do
+                                    (trace (.. i " " mx " "  my))
+                                    (if (self.hand:get-discard i)
+                                        (self.hand:set-discard i false)
+                                        (self.hand:set-discard i true)
+                                    )
+                                )
+                            )
+                        )
+
+                        ;; now check for deal button
+                        ;; in this case the person is done
+                        ;; and wants the score
+                        (if (deal_v_rect:hit mx my)
+                            (do
+                                (trace "deal we are done")
+
+                                (self.hand:redeal)
+                                (local tmp (self.hand:shallow-copy))
+                                (local res (self.ps:score tmp))
+                                (local res-s (self.ps:tr-score res))
+                                (set self._s_score res-s)
+                                (self:handle-bets res)
+
+                                (set self.state STATE_WAITING_FOR_DEAL)
+                            )
+                        )
+
+
+
+
+
+
+
+                    )                
                 )
 
-                ;; now check for deal button
-                (if (deal_v_rect:hit mx my)
-                    (do
-                        (trace "deal...")
-                    )
-                )
 
-                ;; now check for bet buttons
-                (if (bet1_v_rect:hit mx my)
-                    (do
-                        (trace "bet1")
-                        (set self.currentbet 1)
-                    )
-                )
-                (if (bet5_v_rect:hit mx my)
-                    (do
-                        (trace "bet5")
-                        (set self.currentbet 5)
-                    )
-                )
+
+
+
                 
 
             )
@@ -269,6 +325,7 @@
                     (set self.last_mouse_value md)
                 )
 
+                ;; not used really
                 (local pressedUp (btnp 0))
                 (local pressedDown (btnp 1))
                 (local pressedLeft (btnp 2))
@@ -277,44 +334,6 @@
                 (local pressedB (btnp 5))
                 (local pressedX (btnp 6))
                 (local pressedY (btnp 7))
-
-                (if pressedLeft
-                    (if (> self.current_card 1)
-                        (set self.current_card (- self.current_card 1))
-                    )
-                    
-                )
-                (if pressedRight
-                    (if (< self.current_card 5)
-                        (set self.current_card (+ self.current_card 1))
-                    )
-                )
-                
-                ;; highlights the draw button if not down already
-                ;; if already down then does nothing
-                (if pressedDown
-                    (trace "down")
-                )
-
-                ;; moves back up to cards
-                ;; if already on cards does nothing
-                (if pressedUp
-                    (trace "up")
-                )
-
-
-                (if pressedA
-                    ;; need to tell gui to no longer draw card
-                    ;; and also for pulling new cards
-                    (do
-                        ;;(trace (.. "current card " self.current_card ))
-                        (if (self.hand:get-discard self.current_card)
-                            (self.hand:set-discard self.current_card false)
-                            (self.hand:set-discard self.current_card true)
-                        )
-                        ;;(trace (.. (self.hand:get-discard self.current_card)))
-                    )
-                )
 
                 (if pressedX
                     (do
@@ -325,17 +344,6 @@
                         (local res-s (self.ps:tr-score res))
                         (set self._s_score res-s)
                         (self:handle-bets res)
-                    )
-                )
-
-                (if pressedY
-                    (do
-                        (trace "pressed Y")
-                        
-                        (local res 
-                            (self.ps:pay-table PokerScore.SCORE_ROYAL_FLUSH 1))
-                        (trace res)
-                        
                     )
                 )
                 
@@ -351,48 +359,42 @@
             )
 
             :draw (fn [self]
+
+                ;; clear screen
                 (cls 0)
 
+                ;; draw background
                 (map 0 0)
-                ;; woooo this works
-                ;; (sspr 0 10 10)
 
-                ;; get the first card from the deck
-                ;; (local c (self.deck:get 0))
-                
-                ;; display the graphic
-                ;; (sspr c.snum 10 10)
-
+                ;; draw cards from hand
                 (for [i 1 5]
                     (local c (self.hand:get i))
                     (local computedx (- (* i 42) offset_to_left))
                     ;; (trace (.. i " " computedx))
-                    (sspr c.snum  computedx 5)
+                    (sspr c.snum  computedx cards_y_top)
                 )
+                ;; draw flipped cards
                 (for [i 1 5]
                     (if (self.hand:get-discard i)
-                        (sspr 44 (- (* i 42) offset_to_left) 5)
+                        (sspr 44 (- (* i 42) offset_to_left) cards_y_top)
                     )
                 )
                 
-                ;; current card marker not used anymore
-                ;; (rect (* self.current_card 36) 40 10 10 14)
+                ;; buttons
 
                 ;; deal button
                 (rect deal_v_rect.x deal_v_rect.y 
                     deal_v_rect.w deal_v_rect.h 14)
-                (print "deal" 195 72 0)
+                (print "deal" deal_v_rect.x deal_v_rect.y 0)
 
                 ;; bet 1
-                (rect 100 72 30 10 14)
-                (print "bet1" 100 72 0)
+                (rect bet1_v_rect.x bet1_v_rect.y bet1_v_rect.w bet1_v_rect.h 
+                    14)
+                (print "bet1" bet1_v_rect.x bet1_v_rect.y 0)
 
                 ;; bet 5
-                (rect 100 92 30 10 14)
-                (print "bet5" 100 92 0)
-
-                (print "use mouse" 10 80)
-                ;; (print "down will move to deal" 10 88)
+                (rect bet5_v_rect.x bet5_v_rect.y bet5_v_rect.w bet5_v_rect.h 14)
+                (print "bet5" bet5_v_rect.x bet5_v_rect.y 0)
 
                 (print (.. "bank: " (tostring self.money)) 10 112)
                 (print (.. "bet: " (tostring self.currentbet)) 150 112)
@@ -400,6 +402,23 @@
                 (if (~= self._s_score nil)
                     (print (.. "score : " self._s_score) 10 124)
                 )
+
+
+                (match self.state
+                STATE_WAITING_FOR_DEAL 
+                    (do
+                        ;; need to show text
+                        ;; click deal to start...
+                        (print "make bet, click deal" 10 (/ h 2) 6 false 2)
+                    )
+                STATE_WAITING_FOR_DISCARDS 
+                    (do
+                        (local _ nil)
+                    )
+                )
+
+
+
             )
 
 
