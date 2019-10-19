@@ -30,6 +30,8 @@
 })
 
 (local (w h) (values 240 136))
+(local offset_to_left 20)
+(local deal_v_rect (TRect.create 195 72 24 8 14))
 
 ;; my spr routine
 ;; only here to keep complexity down
@@ -166,7 +168,6 @@
     
                 ;; need to create rects for the cards
                 (for [i 1 5]
-                    (local offset_to_left 20)
                     (local computedx (- (* i 42) offset_to_left))
                     (local tmp (TRect.create computedx 5 16 32))
                     (tset self.rects i tmp)
@@ -199,8 +200,9 @@
             ;; called one time for mouse up
             :mouse-up-handler (fn [self mx my]
                 (set self.gmouse-is-down false)
-                (trace (.. "mouse up handler" mx " " my))
+                ;; (trace (.. "mouse up handler" mx " " my))
                 
+                ;; check for card interactions
                 (for [i 1 5]
                     ;; set 
                     (local d (. self.rects i))
@@ -208,15 +210,19 @@
                         (do
                             (trace (.. i " " mx " "  my))
 
-
                             (if (self.hand:get-discard i)
                                 (self.hand:set-discard i false)
                                 (self.hand:set-discard i true)
                             )
 
-
-
                         )
+                    )
+                )
+
+                ;; now check for deal button
+                (if (deal_v_rect:hit mx my)
+                    (do
+                        (trace "deal...")
                     )
                 )
 
@@ -341,8 +347,6 @@
                 ;; display the graphic
                 ;; (sspr c.snum 10 10)
 
-                (local offset_to_left 20)
-
                 (for [i 1 5]
                     (local c (self.hand:get i))
                     (local computedx (- (* i 42) offset_to_left))
@@ -355,21 +359,18 @@
                     )
                 )
                 
-                (rect (* self.current_card 36) 40 10 10 14)
+                ;; current card marker not used anymore
+                ;; (rect (* self.current_card 36) 40 10 10 14)
 
                 ;; deal button
                 (rect 195 72 24 8 14)
                 (print "deal" 195 72 0)
 
 
-                (print "use left and right to move" 10 80)
-                (print "down will move to deal" 10 88)
+                (print "use mouse" 10 80)
+                ;; (print "down will move to deal" 10 88)
 
-                ;;(print "press z to mark a card for discard" 10 88)
-                ;;(print "press a to draw new cards and score" 10 96)
-                ;;(print "press x for next hand" 10 104)
                 (print (.. "bank: " (tostring self.money)) 10 112)
-                ;;(print (.. "bet:  (tostring self.currentbet)) 50 112)
                 (print (.. "bet: " (tostring self.currentbet)) 150 112)
 
                 (if (~= self._s_score nil)
