@@ -366,7 +366,23 @@
                                 PokerScore.SCORE_NONE -1
                                 ;; MISSING pair of jacks+
                                 )
+
                             2 (trace "got 2")
+
+                            5 (match score
+                                PokerScore.SCORE_ROYAL_FLUSH 500
+                                PokerScore.SCORE_STRAIGHT_FLUSH 100
+                                PokerScore.SCORE_FOUR_OF_KIND 50
+                                PokerScore.SCORE_FULL_HOUSE 18
+                                PokerScore.SCORE_FLUSH 12
+                                PokerScore.SCORE_STRAIGHT 8
+                                PokerScore.SCORE_THREE_OF_KIND 6
+                                PokerScore.SCORE_TWO_PAIR 4
+                                PokerScore.SCORE_ONE_PAIR 2
+                                PokerScore.SCORE_NONE -1
+                                ;; MISSING pair of jacks+
+
+                            )
                         )
                     ) ;; local amount
                     (trace (.. "amount is set to " amt))
